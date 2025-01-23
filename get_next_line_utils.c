@@ -3,13 +3,12 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adammour <adammour@student.42.fr>          +#+  +:+       +#+        */
+/*   By: adammour <skn.aga108@gmail.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/08 19:15:52 by adammour          #+#    #+#             */
-/*   Updated: 2025/01/08 19:15:52 by adammour         ###   ########.fr       */
+/*   Updated: 2025/01/22 18:57:47 by adammour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #include "get_next_line.h"
 
@@ -66,17 +65,4 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	}
 	new_str[i] = '\0';
 	return (new_str);
-}
-
-void	*ft_calloc(size_t num, size_t size)
-{
-	size_t	len;
-	void	*ptr;
-
-	len = num * size;
-	ptr = malloc(len);
-	if (!ptr)
-		return (NULL);
-	ft_bzero(ptr, len);
-	return (ptr);
 }
