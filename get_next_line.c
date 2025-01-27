@@ -6,7 +6,7 @@
 /*   By: adammour <skn.aga108@gmail.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 21:17:10 by adammour          #+#    #+#             */
-/*   Updated: 2025/01/23 17:11:13 by adammour         ###   ########.fr       */
+/*   Updated: 2025/01/27 18:45:21 by adammour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,44 +23,87 @@ char    *read_line(int fd, char *str)
     if (!buffer)
         return NULL;
     if (!str)
+    {
         str = malloc(sizeof(char));
+        if (!str)
+            return(free(buffer), NULL);
+        str[0] = '\0'; 
+    }
     while (rd > 0 && !ft_strrchr(str, '\n'))
     {
         rd = read(fd, buffer, BUFFER_SIZE);
+        if (rd < 0)
+            return(free(buffer), NULL);
         buffer[rd] = '\0';
         new_str = ft_strjoin(str, buffer);
-        if(!new_str)
-            return (NULL);
-        //free(str);
+        if (!new_str)
+            return(free(str), free(buffer), NULL); 
         str = new_str;
     }
     free(buffer);
-    return(str);
+    return (str);
 }
+
 char    *get_line(char *str)
 {
-    char    *line;
+    char    *buffer;
     int     i;
     int     j;
 
     i = 0;
+    if(!str)
+        return(NULL);
     while (str[i] && str[i] != '\0')
         i++;
-    if(str[i] == '\n')
-        i++;
-    line = malloc(sizeof(char *) * (i + 1));
-    if (!line)
-        return(NULL);
+    buffer = malloc(sizeof(char) * (i + 2)); // +2 pour recup '\n' et '\0'
+    if (!buffer)
+        return(free(str), NULL);
     j = 0;
-    while (str[j] && str[j] == '\n')
+    while (j < i)
     {
-        line[j] = str[j];
+        buffer[j] = str[j];
         j++;
     }
     if (str[j] == '\n')
-        line[j++] = '\n';
-    line[j] = '\0';
-    return (line);
+        buffer[j++] = '\n';
+    buffer[j] = '\0';
+    return (buffer);
+}
+
+char    *clean_line(char *str)
+{
+    char    *buffer;
+    int i;
+    int j;
+
+    i = 0;
+    while (str[i] && str[i] != '\n')
+        i++;
+    if (!str)
+        return (free(str), NULL); // si str echoue libere memoire du 1er malloc
+    buffer = malloc(ft_strlen(&str[i]) + 1);
+    if(!buffer)
+        return (free(str), NULL);
+    j = 0;
+    while(str[i])
+        buffer[j++] = str[i++];
+    buffer[j]= '\0';
+    free(str);
+    return(buffer);
+}
+char    *get_next_line(int fd)
+{
+    static char *buffer;
+    char *line;
+
+    if (fd < 0 || BUFFER_SIZE <= 0 || read(fd, 0, 0) < 0)
+        return (NULL);
+    buffer = read_line(fd, line);
+    if (!buffer)
+        return(NULL);
+    line = get_line(buffer);
+    buffer = clean_line(buffer);
+    return(line);
 }
 //malloc la ligne qu'on return a la fin
 //parcourir la chaine de caractere jusqu'au \n et copier les caracteres
@@ -73,12 +116,19 @@ char    *get_line(char *str)
 //return la chaine de caracteres
 
 #include <stdio.h>
+#include <fcntl.h>
+
 int main()
 {
     int fd;
+    char *line;
 
     fd = open("texte", O_RDONLY);
-    
-    char *str = "";
-    printf("%s", read_line(fd, str));
+    while ((line = get_next_line(fd)) != NULL)
+    {
+        printf("%s", line);
+        free(line);
+    }
+    return 0;
 }
+
