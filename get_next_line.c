@@ -6,7 +6,7 @@
 /*   By: adammour <adammour@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 21:17:10 by adammour          #+#    #+#             */
-/*   Updated: 2025/01/27 20:38:39 by adammour         ###   ########.fr       */
+/*   Updated: 2025/01/27 22:13:59 by adammour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ char	*read_line(int fd, char *str)
 		new_str = ft_strjoin(str, buffer);
 		if (!new_str)
 			return (free(str), free(buffer), NULL);
+		free(str);
 		str = new_str;
 	}
 	free(buffer);
@@ -105,7 +106,8 @@ char	*get_next_line(int fd)
 	static char	*buffer;
 	char		*line;
 
-	if (fd < 0 || BUFFER_SIZE <= 0 || read(fd, 0, 0) < 0)
+	line = NULL;
+	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
 	buffer = read_line(fd, line);
 	if (!buffer)
