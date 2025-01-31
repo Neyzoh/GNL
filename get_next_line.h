@@ -3,16 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adammour <adammour@student.42.fr>          +#+  +:+       +#+        */
+/*   By: adammour <skn.aga108@gmail.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 21:23:36 by adammour          #+#    #+#             */
-/*   Updated: 2025/01/27 20:24:37 by adammour         ###   ########.fr       */
+/*   Updated: 2025/01/30 20:56:02 by adammour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef GET_NEXT_LINE_H
 # define GET_NEXT_LINE_H
-# define BUFFER_SIZE 999
+#ifndef BUFFER_SIZE
+# define BUFFER_SIZE 18
+#endif
 
 # include <fcntl.h>
 # include <stddef.h>
@@ -21,7 +23,9 @@
 
 char	*read_line(int fd, char *str);
 
-char	*get_line(char *str);
+char	*ft_get_line(char *str);
+
+//char	*ft_strjoin_free(char *s1, char const *s2);
 
 char	*clean_line(char *str);
 

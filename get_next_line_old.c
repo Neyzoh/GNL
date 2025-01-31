@@ -6,7 +6,7 @@
 /*   By: adammour <skn.aga108@gmail.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 21:17:10 by adammour          #+#    #+#             */
-/*   Updated: 2025/01/31 19:41:00 by adammour         ###   ########.fr       */
+/*   Updated: 2025/01/30 20:39:41 by adammour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ char	*read_line(int fd, char *str)
 	return (str);
 }
 
-char	*ft_get_line(char *str)
+char	*get_line(char *str)
 {
 	char	*buffer;
 	int		i;
@@ -61,14 +61,14 @@ char	*ft_get_line(char *str)
 	i = 0;
 	if (!str)
 		return (NULL);
-	while (str[i] && str[i] != '\n') //!!!!!!!!!!!!!
+	while (str[i] && str[i] != '\0')
 		i++;
 	buffer = malloc(sizeof(char) * (i + 2));
 	if (!buffer)
 		return (free(str), NULL);
     // je dois m'assurer que la chaine buffer est correctement copié
 	i = 0;
-	while (str[i] && str[i] != '\n') //!!!!!!!!!!!!
+	while (str[i])
 	{
 		buffer[i] = str[i];
 		i++;
@@ -88,8 +88,6 @@ char	*clean_line(char *str)
 	i = 0;
 	while (str[i] && str[i] != '\n')
 		i++;
-	if (str[i] && str[i] == '\n') //!!!!!!!!!!!!!!!!!!!!!
-		i++; //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	if (!str)
 		return (free(str), NULL);
 	buffer = malloc(ft_strlen(&str[i]) + 1);
@@ -99,58 +97,42 @@ char	*clean_line(char *str)
 	while (str[i])
 		buffer[j++] = str[i++];
 	buffer[j] = '\0';
-	//free(str);
+	free(str);
 	return (buffer);
 }
 
-#include <stdio.h>
 char	*get_next_line(int fd)
 {
 	static char	*buffer;
 	char		*line;
 
-	//line = NULL;
+	line = NULL;
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
-	buffer = read_line(fd, buffer); //!!!!!!!!!!!!!!!!!
-	//printf("===buffer read line: %s\n", buffer );
+	buffer = read_line(fd, line);
 	if (!buffer)
 		return (NULL);
-	line = ft_get_line(buffer);
-	if (!line || !line[0]) //!!!!!!!!!!!!!!!!!!!!!
-	{
-		buffer = NULL;
-		free(buffer);
-		return(NULL);
-	}
-	//printf("===line: %s\n", line);
+	line = get_line(buffer);
 	buffer = clean_line(buffer);
-	//printf("===cleaned buffer: %s\n\n\n", buffer);
-	return (line); //!!!!!!!!!!!!!!!!!!!!!
+	return (buffer);
 }
 
+/*#include <fcntl.h>
+#include <stdio.h>
 
-// #include <fcntl.h>
-// #include <stdio.h>
+int	main(void)
+{
+	//int		fd;
+	//char	*line;
 
-// int	main(void)
-// {
-// 	int		fd;
-// 	char	*line;
+	//fd = open("texte", O_RDONLY);
+	while ((line = get_next_line(fd)) != NULL)
+	{
+		printf("%s", line);
+		free(line);
+	}
 
-// 	fd = open("texte", O_RDONLY);
-// 	while ((line = get_next_line(fd)) != NULL)
-// 	{
-// 		printf("%s", line);
-// 		free(line);
-// 	}
-// }
-// 	printf("%s\n", read_line(fd, NULL));
-// 	printf("%s\n", read_line(fd, NULL));
-// 	printf("%s\n", read_line(fd, NULL));
-// 	printf("%s\n", read_line(fd, NULL));
-	// printf("%s", clean_line("hello this is a\n\n\ntest"));
-// printf("%s", ft_get_line("\n a test"));
-// 	return (0);
-// }
-
+	//printf("%s", read_line(fd, NULL));
+	printf("%s", clean_line("hello this is a\ntest"));
+	return (0);
+} */

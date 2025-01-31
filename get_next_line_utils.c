@@ -6,7 +6,7 @@
 /*   By: adammour <skn.aga108@gmail.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/08 19:15:52 by adammour          #+#    #+#             */
-/*   Updated: 2025/01/22 18:57:47 by adammour         ###   ########.fr       */
+/*   Updated: 2025/01/30 20:56:11 by adammour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,3 +66,11 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	new_str[i] = '\0';
 	return (new_str);
 }
+
+// char	*ft_strjoin_free(char *s1, char const *s2)
+// {
+// 	char	*tmp;
+// 	tmp = ft_strjoin((const char *)s1, s2);
+// 	free(s1);
+// 	return(tmp);
+// }
