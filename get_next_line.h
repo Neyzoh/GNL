@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adammour <skn.aga108@gmail.com>            +#+  +:+       +#+        */
+/*   By: adammour <adammour@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 21:23:36 by adammour          #+#    #+#             */
-/*   Updated: 2025/01/30 20:56:02 by adammour         ###   ########.fr       */
+/*   Updated: 2025/01/31 22:53:42 by adammour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,6 @@
 char	*read_line(int fd, char *str);
 
 char	*ft_get_line(char *str);
-
-//char	*ft_strjoin_free(char *s1, char const *s2);
 
 char	*clean_line(char *str);
 

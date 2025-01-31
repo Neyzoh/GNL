@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adammour <skn.aga108@gmail.com>            +#+  +:+       +#+        */
+/*   By: adammour <adammour@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 21:17:10 by adammour          #+#    #+#             */
-/*   Updated: 2025/01/31 19:41:00 by adammour         ###   ########.fr       */
+/*   Updated: 2025/01/31 23:32:04 by adammour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,52 +55,52 @@ char	*read_line(int fd, char *str)
 
 char	*ft_get_line(char *str)
 {
-	char	*buffer;
+	char	*line;
 	int		i;
 
 	i = 0;
 	if (!str)
 		return (NULL);
-	while (str[i] && str[i] != '\n') //!!!!!!!!!!!!!
+	while (str[i] && str[i] != '\n')
 		i++;
-	buffer = malloc(sizeof(char) * (i + 2));
-	if (!buffer)
+	line = malloc(sizeof(char) * (i + 2));
+	if (!line)
 		return (free(str), NULL);
-    // je dois m'assurer que la chaine buffer est correctement copié
+    // je dois m'assurer que la chaine line est correctement copié
 	i = 0;
-	while (str[i] && str[i] != '\n') //!!!!!!!!!!!!
+	while (str[i] && str[i] != '\n') 
 	{
-		buffer[i] = str[i];
+		line[i] = str[i];
 		i++;
 	}
 	if (str[i] == '\n')
-		buffer[i++] = '\n';
-	buffer[i] = '\0';
-	return (buffer);
+		line[i++] = '\n';
+	line[i] = '\0';
+	return (line);
 }
 
 char	*clean_line(char *str)
 {
-	char	*buffer;
+	char	*line;
 	int		i;
 	int		j;
 
 	i = 0;
 	while (str[i] && str[i] != '\n')
 		i++;
-	if (str[i] && str[i] == '\n') //!!!!!!!!!!!!!!!!!!!!!
-		i++; //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	if (str[i] && str[i] == '\n') 
+		i++;
 	if (!str)
 		return (free(str), NULL);
-	buffer = malloc(ft_strlen(&str[i]) + 1);
-	if (!buffer)
+	line = malloc(ft_strlen(&str[i]) + 1);
+	if (!line)
 		return (free(str), NULL);
 	j = 0;
 	while (str[i])
-		buffer[j++] = str[i++];
-	buffer[j] = '\0';
-	//free(str);
-	return (buffer);
+		line[j++] = str[i++];
+	line[j] = '\0';
+	free(str);
+	return (line);
 }
 
 #include <stdio.h>
@@ -109,48 +109,38 @@ char	*get_next_line(int fd)
 	static char	*buffer;
 	char		*line;
 
-	//line = NULL;
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
-	buffer = read_line(fd, buffer); //!!!!!!!!!!!!!!!!!
-	//printf("===buffer read line: %s\n", buffer );
+	buffer = read_line(fd, buffer); 
 	if (!buffer)
 		return (NULL);
 	line = ft_get_line(buffer);
-	if (!line || !line[0]) //!!!!!!!!!!!!!!!!!!!!!
+	if (!line || !line[0]) 
 	{
-		buffer = NULL;
 		free(buffer);
+		buffer = NULL;
 		return(NULL);
 	}
-	//printf("===line: %s\n", line);
 	buffer = clean_line(buffer);
-	//printf("===cleaned buffer: %s\n\n\n", buffer);
-	return (line); //!!!!!!!!!!!!!!!!!!!!!
+	free(buffer);
+	return (line); 
 }
 
 
-// #include <fcntl.h>
-// #include <stdio.h>
+#include <fcntl.h>
+#include <stdio.h>
 
-// int	main(void)
-// {
-// 	int		fd;
-// 	char	*line;
+int	main(void)
+{
+	int		fd;
+	char	*line;
 
-// 	fd = open("texte", O_RDONLY);
-// 	while ((line = get_next_line(fd)) != NULL)
-// 	{
-// 		printf("%s", line);
-// 		free(line);
-// 	}
-// }
-// 	printf("%s\n", read_line(fd, NULL));
-// 	printf("%s\n", read_line(fd, NULL));
-// 	printf("%s\n", read_line(fd, NULL));
-// 	printf("%s\n", read_line(fd, NULL));
-	// printf("%s", clean_line("hello this is a\n\n\ntest"));
-// printf("%s", ft_get_line("\n a test"));
-// 	return (0);
-// }
+	fd = open("texte", O_RDONLY);
+	while ((line = get_next_line(fd)) != NULL)
+	{
+		printf("%s", line);
+		free(line);
+	}
+	return (0);
+}
 
